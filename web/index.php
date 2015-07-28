@@ -20,8 +20,15 @@ include __DIR__.'/../src/EyeWitness/registerProviders.php';
 $app->before(function (Request $request) {
     if (0 === strpos($request->headers->get('Content-Type'), 'application/json'))
     {
-        $data = json_decode($request->getContent(), true);
+        $data = @json_decode($request->getContent(), true);
+
+        if ($data === null)
+        {
+			$app->abort(400, 'Your request did not include valid JSON');
+        }
+
         $request->request->replace(is_array($data) ? $data : array());
+
     }
 });
 
