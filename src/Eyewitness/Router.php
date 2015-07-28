@@ -14,9 +14,11 @@ class Router
 		$this->app = $app;
 	}
 
-	public function setBasicRoutes()
+	public function setApiRoutes()
 	{
 		$controllerFactory = $this->app['controllers_factory'];
+
+		$controllerFactory->get('/appeals/', 'Eyewitness\Controller\ApiController::appealAction');
 
 		return $controllerFactory;
 	}
