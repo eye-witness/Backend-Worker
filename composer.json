@@ -1,0 +1,27 @@
+{
+    "name": "eyewitness/eyewitness",
+    "require": {
+        "silex/silex": "~1.0",
+        "twig/twig": ">=1.8,<2.0-dev",
+        "doctrine/dbal": "2.2.*",
+        "symfony/form": "~2.3",
+        "symfony/validator": "~2.3",
+        "symfony/config": "~2.3",
+        "symfony/translation": "~2.3",
+        "symfony/locale": "~2.3",
+        "symfony/twig-bridge": "~2.3",
+        "swiftmailer/swiftmailer": ">=4.1.2,<4.2-dev",
+        "symfony/icu": "1.0.*"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "MichaelC",
+            "email": "m@michaelcullum.com"
+        }
+    ],
+    "autoload": {
+        "psr-0": {"Eyewitness\\": "src/"}
+    },
+    "minimum-stability": "stable"
+}
