@@ -18,12 +18,13 @@ $router = new Router($app);
 include __DIR__.'/../src/EyeWitness/registerProviders.php';
 
 $app->before(function (Request $request) {
-    if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
+    if (0 === strpos($request->headers->get('Content-Type'), 'application/json'))
+    {
         $data = json_decode($request->getContent(), true);
         $request->request->replace(is_array($data) ? $data : array());
     }
 });
 
-$app->mount('/', $router->setBasicRoutes());
+$app->mount('/api/', $router->setApiRoutes());
 
 $app->run();
