@@ -41,6 +41,6 @@ $app['api.controller'] = $app->share(function() use ($app) {
     return new ApiController($app['police.data'], $app['db']);
 });
 
-$app->get('/appeals/', 'api.controller:appealAction');
+$app->post('/appeals/', 'api.controller:appealAction');
 
 $app->run();
