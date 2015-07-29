@@ -4,9 +4,16 @@ namespace EyeWitness\Controller;
 
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ApiController
 {
+	function __construct($policeData, $db)
+	{
+		$this->policeData = $policeData;
+		$this->db = $db;
+	}
+
 	public function appealAction(Request $request, Application $app)
 	{
 		if (0 !== strpos($request->headers->get('Content-Type'), 'application/json'))
@@ -32,7 +39,7 @@ class ApiController
 			FROM appeals
 			WHERE block_id ='". $whereStatement;
 
-		$query = $app['db']->prepare($sql)->execute();
+		$query = $this->db->prepare($sql)->execute();
 		$appealsRaw = $query->fetchAll();
 
 		$appeals = array();
@@ -47,7 +54,7 @@ class ApiController
 			$processedAppeal['description']['location'] = $appeal['location'];
 			$processedAppeal['description']['crimeType'] = $appeal['crime_type'];
 			$processedAppeal['description']['text'] = $appeal['description'];
-			$processedAppeal['contact'] = $this->policeInfo->getInfo($appeal['policeForceId']);
+			$processedAppeal['contact'] = $this->policeData->getContactInfo($appeal['policeForceId']);
 
 			unset(
 				$processedAppeal['lat'],
@@ -61,6 +68,6 @@ class ApiController
 			$appeals[$i] = $processedAppeal;
 		}
 
-		return $app->json($appeals, 200, 'API Version: 1.0.0');
+		return new JsonResponse($appeals, 200, 'API Version: 1.0.0');
 	}
 }
