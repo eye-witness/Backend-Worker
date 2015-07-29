@@ -33,14 +33,9 @@ $app->before(function (Request $request) {
 	}
 });
 
-$app['police.data'] = $app->share(function() {
-    return new PoliceDataUtils();
-});
-
-$app['api.controller'] = $app->share(function() use ($app) {
-    return new ApiController($app['police.data'], $app['db']);
-});
-
-$app->post('/appeals/', 'api.controller:appealAction');
+// Register services
+require __DIR__.'/../src/EyeWitness/registerServices.php';
+// Add routes
+require __DIR__.'/../src/EyeWitness/registerRoutes.php';
 
 $app->run();
