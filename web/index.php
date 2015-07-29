@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 use Eyewitness\Controller\ApiController;
 use Eyewitness\Utils\PoliceDataUtils;
 
-require __DIR__.'/config.php';
+require __DIR__.'/../config.php';
 
 // Basic App Setup Stuff
 $app = new Application();
