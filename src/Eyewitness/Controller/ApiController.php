@@ -10,23 +10,23 @@ class ApiController
 	public function appealAction(Request $request, Application $app)
 	{
 		if (0 !== strpos($request->headers->get('Content-Type'), 'application/json'))
-    	{
-    		$app->abort(400, 'Your request was not intepreted as a JSON Request (Content Type Header)');
-    	}
+		{
+			$app->abort(400, 'Your request was not intepreted as a JSON Request (Content Type Header)');
+		}
 
 		$postData = array(
-	        'blocks' => $request->request->get('blocks'),
-	        'time'  => $request->request->get('time'),
-    	);
+			'blocks' => $request->request->get('blocks'),
+			'time'  => $request->request->get('time'),
+		);
 
-    	$blocks = array();
+		$blocks = array();
 
-    	foreach ($postData['blocks'] as $block)
-    	{
-    		$blocks[] = strval(int($block['lat'])) . strval(int($block['long']));
-    	}
+		foreach ($postData['blocks'] as $block)
+		{
+			$blocks[] = strval(int($block['lat'])) . strval(int($block['long']));
+		}
 
-    	$whereStatement = implode("' OR block_id='", $blocks);
+		$whereStatement = implode("' OR block_id='", $blocks);
 
 		$sql = "SELECT *
 			FROM appeals
