@@ -23,10 +23,10 @@ class ApiController
 
     	foreach ($postData['blocks'] as $block)
     	{
-    		$blocks += (strval(int($block['lat'])) . strval(int['long']));
+    		$blocks[] = strval(int($block['lat'])) . strval(int($block['long']));
     	}
 
-    	$whereStatement = implode("' OR block_id='", $blocks)
+    	$whereStatement = implode("' OR block_id='", $blocks);
 
 		$sql = "SELECT *
 			FROM appeals
