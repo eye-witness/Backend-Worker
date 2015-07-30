@@ -8,9 +8,4 @@ class PoliceDataUtils implements PoliceDataInterface
 	{
 		return ['phoneNumber' => '101', 'policeForce' => 'Surrey Police'];
 	}
-
-	public function getId(string $policeForce) : int
-	{
-		return 1;
-	}
 }
