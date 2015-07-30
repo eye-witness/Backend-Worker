@@ -16,7 +16,7 @@ $app = new Application();
 $app['debug'] = $debug;
 
 // Register service providers
-require __DIR__.'/../src/EyeWitness/registerProviders.php';
+require __DIR__.'/../src/Eyewitness/registerProviders.php';
 
 $app->before(function (Request $request) {
 	if (0 === strpos($request->headers->get('Content-Type'), 'application/json'))
@@ -33,9 +33,9 @@ $app->before(function (Request $request) {
 });
 
 // Register services
-require __DIR__.'/../src/EyeWitness/registerServices.php';
+require __DIR__.'/../src/Eyewitness/registerServices.php';
 // Add routes
-require __DIR__.'/../src/EyeWitness/registerRoutes.php';
+require __DIR__.'/../src/Eyewitness/registerRoutes.php';
 
 $app->after(function (Request $request, Response $response) {
 	$response->headers->set('Access-Control-Allow-Origin', '*');
