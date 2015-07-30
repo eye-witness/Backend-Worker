@@ -5,6 +5,7 @@ require_once __DIR__.'/../vendor/autoload.php';
 use Silex\Application;
 use Eyewitness\Router;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Eyewitness\Controller\ApiController;
 use Eyewitness\Utils\PoliceDataUtils;
@@ -37,5 +38,9 @@ $app->before(function (Request $request) {
 require __DIR__.'/../src/EyeWitness/registerServices.php';
 // Add routes
 require __DIR__.'/../src/EyeWitness/registerRoutes.php';
+
+$app->after(function (Request $request, Response $response) {
+	$response->headers->set('Access-Control-Allow-Origin', '*');
+});
 
 $app->run();
