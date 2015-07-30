@@ -41,7 +41,7 @@ class ApiController
 
 		$sql = "SELECT *
 			FROM appeals
-			WHERE (block_id ='" . $whereStatement . ") AND created <=" . $lastFetched;
+			WHERE (block_id ='" . $whereStatement . ") AND created >=" . $lastFetched;
 
 		$query = $this->db->prepare($sql)->execute();
 		$appealsRaw = $query->fetchAll();
