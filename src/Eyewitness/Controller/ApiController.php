@@ -14,6 +14,11 @@ class ApiController
 		$this->db = $db;
 	}
 
+	private function getBlockID(int $lat, int $long)
+	{
+		return ceil(int($putData['lat'] * 2 . $putData['long'] * 2));
+	}
+
 	public function appealPostAction(Request $request)
 	{
 		if (0 !== strpos($request->headers->get('Content-Type'), 'application/json'))
@@ -31,7 +36,7 @@ class ApiController
 
 		foreach ($postData['blocks'] as $block)
 		{
-			$blocks[] = strval(int($block['lat'])) . strval(int($block['long']));
+			$blocks[] = strval($this->getBlockId($block['lat']), $block['long']));
 		}
 
 		$whereStatement = implode("' OR block_id='", $blocks);
@@ -58,7 +63,7 @@ class ApiController
 			$processedAppeal['description']['location'] = $appeal['location'];
 			$processedAppeal['description']['crimeType'] = $appeal['crime_type'];
 			$processedAppeal['description']['text'] = $appeal['description'];
-			$processedAppeal['contact'] = $this->policeData->getContactInfo($appeal['policeForceId']);
+			$processedAppeal['contact'] = $this->policeData->getContactInfo($appeal['police_force_id']);
 
 			unset(
 				$processedAppeal['lat'],
@@ -82,21 +87,40 @@ class ApiController
 			$app->abort(400, 'Your request was not intepreted as a JSON Request (Content Type Header)');
 		}
 
-		// Get data using $request->request->get('var'),
+		$putData = $request->request->all();
 
 		$data['created'] = time();
-		// Generate block id
+
+		$blockId = ceil($putData['lat'] * 2 . $putData['long'] * 2);
+
 		$data['policeForceId'] = $this->policeData->getId($putData['policeForce']);
 
-		// Persist to DB
+		$incidentTime = new DataTime();
+		$incidentTime = $this->incidentTime
+			->setDate($putData['year'], $putData['month'], $putData['day'])
+			->setTime($putData['hour'], $putData['minute'])
+			->getTimestamp();
 
-		if (db fails)
+		$pass = $this->db->insert('appeals', array(
+			'case_id' => $putData['case_id'],
+			'time' => $incidentTime,
+			'lat' => $putData['lat'],
+			'long' => $putData['long'],
+			'radius' => $putData['radius'],
+			'location' => $putData['location'],
+			'crime_type' => $putData['crime_type'],
+			'description' => $putData['description'],
+			'police_force_id' => $putData['police_force_id'],
+			'block_id' => $blockId,
+		));
+
+		if (!$pass)
 		{
 			$app->abort(500, "For some reason we couldn't write this to our DB but your request was 201 accepted");
 		}
 		else
 		{
-			$app->abort(200);
+			$app->abort(200, "Success");
 		}
 	}
 }
