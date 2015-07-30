@@ -3,7 +3,6 @@
 require_once __DIR__.'/../vendor/autoload.php';
 
 use Silex\Application;
-use Eyewitness\Router;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -15,7 +14,6 @@ require __DIR__.'/../config.php';
 // Basic App Setup Stuff
 $app = new Application();
 $app['debug'] = $debug;
-$router = new Router($app);
 
 // Register service providers
 require __DIR__.'/../src/EyeWitness/registerProviders.php';
