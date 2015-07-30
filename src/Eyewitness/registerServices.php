@@ -1,5 +1,8 @@
 <?php
 
+use Eyewitness\Utils\PoliceDataUtils;
+use Eyewitness\Controller\ApiController;
+
 $app['police.data'] = $app->share(function() {
     return new PoliceDataUtils();
 });
