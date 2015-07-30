@@ -81,5 +81,20 @@ class ApiController
 		{
 			$app->abort(400, 'Your request was not intepreted as a JSON Request (Content Type Header)');
 		}
+
+		// Get data using $request->request->get('var'),
+		// Generate created time
+		// Generate block id
+		// Generate police force id
+		// Persist to DB
+
+		if (db fails)
+		{
+			$app->abort(500, "For some reason we couldn't write this to our DB but your request was 201 accepted");
+		}
+		else
+		{
+			$app->abort(200);
+		}
 	}
 }
