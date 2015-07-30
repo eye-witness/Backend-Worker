@@ -83,9 +83,11 @@ class ApiController
 		}
 
 		// Get data using $request->request->get('var'),
-		// Generate created time
+
+		$data['created'] = time();
 		// Generate block id
-		// Generate police force id
+		$data['policeForceId'] = $this->policeData->getId($putData['policeForce']);
+
 		// Persist to DB
 
 		if (db fails)
