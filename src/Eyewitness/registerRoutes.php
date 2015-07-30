@@ -1,3 +1,3 @@
 <?php
 
-$app->post('/appeals/', 'api.controller:appealAction');
+$app->post('/appeals/', 'api.controller:appealPostAction');

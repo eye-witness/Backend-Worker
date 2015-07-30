@@ -14,7 +14,7 @@ class ApiController
 		$this->db = $db;
 	}
 
-	public function appealAction(Request $request, Application $app)
+	public function appealPostAction(Request $request, Application $app)
 	{
 		if (0 !== strpos($request->headers->get('Content-Type'), 'application/json'))
 		{
@@ -24,6 +24,7 @@ class ApiController
 		$postData = array(
 			'blocks' => $request->request->get('blocks'),
 			'time'  => $request->request->get('time'),
+			'lastFetched' => $request->request->get('lastFetched'),
 		);
 
 		$blocks = array();
@@ -35,9 +36,12 @@ class ApiController
 
 		$whereStatement = implode("' OR block_id='", $blocks);
 
+		$offset = ($time - $postData['time']);
+		$lastFetched = (int) ($postData['time'] + $offset);
+
 		$sql = "SELECT *
 			FROM appeals
-			WHERE block_id ='". $whereStatement;
+			WHERE (block_id ='" . $whereStatement . ") AND created <=" . $lastFetched;
 
 		$query = $this->db->prepare($sql)->execute();
 		$appealsRaw = $query->fetchAll();
