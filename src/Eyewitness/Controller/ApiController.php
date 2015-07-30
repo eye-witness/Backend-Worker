@@ -36,7 +36,7 @@ class ApiController
 
 		foreach ($postData['blocks'] as $block)
 		{
-			$blocks[] = strval($this->getBlockId($block['lat']), $block['long']);
+			$blocks[] = strval($this->getBlockId($block['lat'], $block['long']));
 		}
 
 		$whereStatement = implode("' OR block_id='", $blocks);
