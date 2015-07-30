@@ -16,7 +16,7 @@ class ApiController
 
 	private function getBlockID(int $lat, int $long)
 	{
-		return ceil(int($putData['lat'] * 2 . $putData['long'] * 2));
+		return ceil(intval($putData['lat'] * 2 . $putData['long'] * 2));
 	}
 
 	public function appealPostAction(Request $request)
@@ -36,7 +36,7 @@ class ApiController
 
 		foreach ($postData['blocks'] as $block)
 		{
-			$blocks[] = strval($this->getBlockId($block['lat']), $block['long']));
+			$blocks[] = strval($this->getBlockId($block['lat'], $block['long']));
 		}
 
 		$whereStatement = implode("' OR block_id='", $blocks);

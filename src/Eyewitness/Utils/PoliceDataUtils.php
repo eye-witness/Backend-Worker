@@ -1,6 +1,6 @@
 <?php
 
-namespace EyeWitness\Utils;
+namespace Eyewitness\Utils;
 
 class PoliceDataUtils implements PoliceDataInterface
 {
