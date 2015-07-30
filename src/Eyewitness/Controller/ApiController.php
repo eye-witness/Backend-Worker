@@ -2,7 +2,7 @@
 
 namespace EyeWitness\Controller;
 
-use Silex\Application;
+//use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -14,7 +14,7 @@ class ApiController
 		$this->db = $db;
 	}
 
-	public function appealPostAction(Request $request, Application $app)
+	public function appealPostAction(Request $request)
 	{
 		if (0 !== strpos($request->headers->get('Content-Type'), 'application/json'))
 		{
@@ -73,5 +73,13 @@ class ApiController
 		}
 
 		return new JsonResponse($appeals, 200, 'API Version: 1.0.0');
+	}
+
+	public function appealPutAction(Request $request)
+	{
+		if (0 !== strpos($request->headers->get('Content-Type'), 'application/json'))
+		{
+			$app->abort(400, 'Your request was not intepreted as a JSON Request (Content Type Header)');
+		}
 	}
 }
