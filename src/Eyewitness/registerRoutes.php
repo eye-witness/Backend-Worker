@@ -1,4 +1,4 @@
 <?php
 
-$app->post('/appeals/', 'api.controller:appealPostAction');
-$app->put('/appeals/', 'api.controller:appealPutAction');
+$app->post('api/appeals/', 'api.controller:appealPostAction');
+$app->put('api/appeals/', 'api.controller:appealPutAction');
