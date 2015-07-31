@@ -134,7 +134,7 @@ class ApiController
 
 	private function apiError(int $statusCode, string $message)
 	{
-		$error['code'] = $statusCode;
+		$error['errorCode'] = $statusCode;
 		$error['message'] = $message;
 
 		return new JsonResponse($error, $statusCode)
