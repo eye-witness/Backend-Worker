@@ -65,6 +65,7 @@ class ApiController
 				'latitude' => $appeal['latitude'],
 				'longitude'=> $appeal['longitude'],
 			];
+			$processedAppeal['description'] = [];
 			$processedAppeal['description']['location'] = $appeal['location'];
 			$processedAppeal['description']['crimeType'] = $appeal['crime_type'];
 			$processedAppeal['description']['text'] = $appeal['description'];
