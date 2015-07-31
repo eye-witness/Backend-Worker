@@ -14,9 +14,15 @@ class ApiController
 		$this->db = $db;
 	}
 
-	private function getBlockID(int $lat, int $long)
+	private function getBlockId(int $latitude, int $longitude)
 	{
-		return ceil(intval($putData['lat'] * 2 . $putData['long'] * 2));
+		$lat = strval(ceil($putData['latitude'] * 2));
+		$long = strval(ceil($putData['longitude'] * 2));
+
+		$lat = str_pad($lat, 3, "0", STR_PAD_LEFT);
+		$long = str_pad($long, 3, "0", STR_PAD_LEFT);
+
+		return strval($lat . $long);
 	}
 
 	public function appealPostAction(Request $request)
@@ -36,7 +42,7 @@ class ApiController
 
 		foreach ($postData['blocks'] as $block)
 		{
-			$blocks[] = strval($this->getBlockId($block['lat'], $block['long']));
+			$blocks[] = strval($this->getBlockId($block['latitude'], $block['longitude']));
 		}
 
 		$whereStatement = implode("' OR block_id='", $blocks);
@@ -46,10 +52,9 @@ class ApiController
 
 		$sql = "SELECT *
 			FROM appeals
-			WHERE (block_id ='" . $whereStatement . ") AND created >=" . $lastFetched;
+			WHERE (block_id ='" . $whereStatement . "') AND created >='" . $lastFetched . "'";
 
-		$query = $this->db->prepare($sql)->execute();
-		$appealsRaw = $query->fetchAll();
+		$appealsRaw = $this->db->fetchAll($sql);
 
 		$appeals = array();
 
@@ -57,8 +62,8 @@ class ApiController
 		{
 			$processedAppeal = $appeal;
 			$processedAppeal['location'] = [
-				'lat' => $appeal['lat'],
-				'long'=> $appeal['long'],
+				'latitude' => $appeal['latitude'],
+				'longitude'=> $appeal['longitude'],
 			];
 			$processedAppeal['description']['location'] = $appeal['location'];
 			$processedAppeal['description']['crimeType'] = $appeal['crime_type'];
@@ -66,8 +71,8 @@ class ApiController
 			$processedAppeal['contact'] = $this->policeData->getContactInfo($appeal['police_force_id']);
 
 			unset(
-				$processedAppeal['lat'],
-				$processedAppeal['long'],
+				$processedAppeal['latitude'],
+				$processedAppeal['longitude'],
 				$processedAppeal['location'],
 				$processedAppeal['crime_type'],
 				$processedAppeal['description'],
@@ -77,7 +82,7 @@ class ApiController
 			$appeals[$i] = $processedAppeal;
 		}
 
-		return new JsonResponse($appeals, 200, 'API Version: 1.0.0');
+		return new JsonResponse($appeals, 200);
 	}
 
 	public function appealPutAction(Request $request)
@@ -91,7 +96,7 @@ class ApiController
 
 		$data['created'] = time();
 
-		$blockId = ceil($putData['lat'] * 2 . $putData['long'] * 2);
+		$blockId = strval($this->getBlockId($putData['latitude'], $putData['longitude']));
 
 		$data['policeForceId'] = $this->policeData->getId($putData['policeForce']);
 
@@ -104,8 +109,9 @@ class ApiController
 		$pass = $this->db->insert('appeals', array(
 			'case_id' => $putData['case_id'],
 			'time' => $incidentTime,
-			'lat' => $putData['lat'],
-			'long' => $putData['long'],
+			'created' => $data['created'],
+			'latitude' => $putData['latitude'],
+			'longitude' => $putData['longitude'],
 			'radius' => $putData['radius'],
 			'location' => $putData['location'],
 			'crime_type' => $putData['crime_type'],
