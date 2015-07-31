@@ -54,8 +54,7 @@ class ApiController
 			FROM appeals
 			WHERE (block_id ='" . $whereStatement . "') AND created >='" . $lastFetched . "'";
 
-		$query = $this->db->prepare($sql)->execute();
-		$appealsRaw = $query->fetchAll();
+		$appealsRaw = $this->db->fetchAll($sql);
 
 		$appeals = array();
 
