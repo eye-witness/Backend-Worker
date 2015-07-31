@@ -16,8 +16,8 @@ class ApiController
 
 	private function getBlockId(int $latitude, int $longitude)
 	{
-		$lat = strval(ceil($putData['latitude'] * 2));
-		$long = strval(ceil($putData['longitude'] * 2));
+		//$lat = strval(ceil($putData['latitude'] * 2));
+		//$long = strval(ceil($putData['longitude'] * 2));
 
 		//$lat = str_pad($lat, 3, "0", STR_PAD_LEFT);
 		//$long = str_pad($long, 3, "0", STR_PAD_LEFT);
@@ -96,7 +96,7 @@ class ApiController
 
 		$data['created'] = time();
 
-		$blockId = strval($this->getBlockId($putData['latitude'], $putData['longitude']));
+		$blockId = strval($this->getBlockId(ceil($putData['latitude']*2), floor($putData['longitude']*2)));
 
 		$data['policeForceId'] = $this->policeData->getId($putData['policeForce']);
 
