@@ -82,7 +82,7 @@ class ApiController
 			$appeals[$i] = $processedAppeal;
 		}
 
-		return new JsonResponse($appeals, 200, 'API Version: 1.0.0');
+		return new JsonResponse($appeals, 200);
 	}
 
 	public function appealPutAction(Request $request)
