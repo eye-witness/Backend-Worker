@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ApiController
 {
-	function __construct($policeData, $db)
+	public function __construct($policeData, $db)
 	{
 		$this->policeData = $policeData;
 		$this->db = $db;
@@ -19,10 +19,10 @@ class ApiController
 		$lat = strval(ceil($putData['latitude'] * 2));
 		$long = strval(ceil($putData['longitude'] * 2));
 
-		$lat = str_pad($lat, 3, "0", STR_PAD_LEFT);
-		$long = str_pad($long, 3, "0", STR_PAD_LEFT);
+		//$lat = str_pad($lat, 3, "0", STR_PAD_LEFT);
+		//$long = str_pad($long, 3, "0", STR_PAD_LEFT);
 
-		return strval($lat . $long);
+		return strval($lat . ',' . $long);
 	}
 
 	public function appealPostAction(Request $request)
