@@ -22,7 +22,7 @@ class ApiController
 		//$lat = str_pad($lat, 3, "0", STR_PAD_LEFT);
 		//$long = str_pad($long, 3, "0", STR_PAD_LEFT);
 
-		return strval($lat . ',' . $long);
+		return strval($latitude . ',' . $longitude);
 	}
 
 	public function appealPostAction(Request $request)
@@ -71,11 +71,8 @@ class ApiController
 			$processedAppeal['contact'] = $this->policeData->getContactInfo($appeal['police_force_id']);
 
 			unset(
-				$processedAppeal['latitude'],
-				$processedAppeal['longitude'],
 				$processedAppeal['location'],
 				$processedAppeal['crime_type'],
-				$processedAppeal['description'],
 				$processedAppeal['policeForceId']
 			);
 
