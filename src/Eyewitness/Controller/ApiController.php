@@ -16,12 +16,6 @@ class ApiController
 
 	private function getBlockId(int $latitude, int $longitude)
 	{
-		//$lat = strval(ceil($putData['latitude'] * 2));
-		//$long = strval(ceil($putData['longitude'] * 2));
-
-		//$lat = str_pad($lat, 3, "0", STR_PAD_LEFT);
-		//$long = str_pad($long, 3, "0", STR_PAD_LEFT);
-
 		return strval($latitude . ',' . $longitude);
 	}
 
@@ -29,7 +23,7 @@ class ApiController
 	{
 		if (0 !== strpos($request->headers->get('Content-Type'), 'application/json'))
 		{
-			$app->abort(400, 'Your request was not intepreted as a JSON Request (Content Type Header)');
+			return $this->apiError(400, 'Your request was not intepreted as a JSON Request (Content Type Header)');
 		}
 
 		$postData = array(
@@ -42,10 +36,20 @@ class ApiController
 
 		foreach ($postData['blocks'] as $block)
 		{
+			if (!is_int($block['latitude']) || !is_int($block['longitude']))
+			{
+				return $this->apiError(400, 'Your block id determined by your generic latitude and longitude must be integers');
+			}
+
 			$blocks[] = strval($this->getBlockId($block['latitude'], $block['longitude']));
 		}
 
 		$whereStatement = implode("' OR block_id='", $blocks);
+
+		if (!is_int($postData['time']))
+		{
+			return $this->apiError(400, 'Time must be an integer (Unix timestamp)');
+		}
 
 		$offset = ($time - $postData['time']);
 		$lastFetched = (int) ($postData['time'] + $offset);
@@ -87,7 +91,7 @@ class ApiController
 	{
 		if (0 !== strpos($request->headers->get('Content-Type'), 'application/json'))
 		{
-			$app->abort(400, 'Your request was not intepreted as a JSON Request (Content Type Header)');
+			return $this->apiError(400, 'Your request was not intepreted as a JSON Request (Content Type Header)');
 		}
 
 		$putData = $request->request->all();
@@ -120,11 +124,19 @@ class ApiController
 
 		if (!$pass)
 		{
-			$app->abort(500, "For some reason we couldn't write this to our DB but your request was 201 accepted");
+			return $this->apiError(500, "For some reason we couldn't write this to our DB but your request was 201 accepted");
 		}
 		else
 		{
-			$app->abort(200, "Success");
+			return $this->apiError(200, "Success");
 		}
+	}
+
+	private function apiError(int $statusCode, string $message)
+	{
+		$error['code'] = $statusCode;
+		$error['message'] = $message;
+
+		return new JsonResponse($error, $statusCode)
 	}
 }
