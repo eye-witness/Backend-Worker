@@ -20,5 +20,13 @@
     "autoload": {
         "psr-0": {"Eyewitness\\": "src/"}
     },
-    "minimum-stability": "stable"
+    "config": {
+        "bin-dir": "bin"
+    },
+    "minimum-stability": "stable",
+    "require-dev": {
+        "symfony/browser-kit": "^2.7",
+        "symfony/css-selector": "^2.7",
+        "phpunit/phpunit": "^4.7"
+    }
 }
