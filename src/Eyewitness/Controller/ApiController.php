@@ -14,7 +14,7 @@ class ApiController
 		$this->db = $db;
 	}
 
-	private function getBlockId(int $latitude, int $longitude): string
+	private function getBlockId(int $latitude, int $longitude) : string
 	{
 		return strval($latitude . ',' . $longitude);
 	}
